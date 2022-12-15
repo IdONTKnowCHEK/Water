@@ -21,9 +21,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import niu.edu.water.weather.Weather;
+import niu.edu.water.weather.WeatherAPIInterface;
+import niu.edu.water.weather.WeatherAPIManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity {
 
+    WeatherAPIInterface weatherAPI;
     TextView textView, growthLength, goal;
     Button buttonDrink;
     ImageView imageDrop, plant;
@@ -40,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //API Code
+        weatherAPI = WeatherAPIManager.getInstance().getAPI();
+        Call<Weather> call = weatherAPI.getData();
+        //
         weather = findViewById(R.id.weatherButton);
         log = findViewById(R.id.drinkButton);
         body = findViewById(R.id.bodyButton);
@@ -105,6 +117,25 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        //FetchData
+        call.clone().enqueue(new Callback<Weather>() {
+            @Override
+            public void onResponse(Call<Weather> call, Response<Weather> response) {
+                for(Weather.RecordsDTO.LocationDTO locationDTO : response.body().getRecords().getLocation()){
+                    String msg = "";
+                    for(Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()){
+                        msg += weatherElementDTO.getElementName() + ":" +weatherElementDTO.getElementValue() + ", ";
+                    }
+                    Log.d(locationDTO.getLocationName(), msg);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Weather> call, Throwable t) {
+                Log.d("Data", "Failed");
+            }
+        });
+        //
         body.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

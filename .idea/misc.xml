@@ -3,10 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/android/111final/Water/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.321" />
         <entry key="..\:/android/111final/Water/app/src/main/res/layout/activity_drink_log.xml" value="0.2" />
-        <entry key="..\:/android/111final/Water/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/android/111final/Water/app/src/main/res/layout/card.xml" value="0.264" />
+        <entry key="..\:/android/111final/Water/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/android/111final/Water/app/src/main/res/layout/cup.xml" value="0.1" />
       </map>
     </option>
   </component>
