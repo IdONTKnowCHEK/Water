@@ -6,4 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".drinkLog">
 
+    <ImageView
+        android:id="@+id/background2"
+        android:layout_width="473dp"
+        android:layout_height="818dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+        app:srcCompat="@drawable/background1" />
+
+    <ImageView
+        android:id="@+id/whiteBackground"
+        android:layout_width="473dp"
+        android:layout_height="818dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:alpha=".5"
+        app:srcCompat="@drawable/white" />
+
+    <TextView
+        android:id="@+id/drinkLogText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="喝水紀錄："
+        android:textSize="48dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.043" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="410dp"
+        android:layout_height="550dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.751" />
 </androidx.constraintlayout.widget.ConstraintLayout>

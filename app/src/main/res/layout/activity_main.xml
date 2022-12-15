@@ -24,16 +24,11 @@
         android:id="@+id/plant"
         android:layout_width="95dp"
         android:layout_height="40dp"
-        android:layout_marginStart="201dp"
-        android:layout_marginTop="502dp"
-        android:layout_marginEnd="196dp"
-        android:layout_marginBottom="298dp"
+        android:layout_marginBottom="295dp"
         app:layout_constraintBottom_toBottomOf="@+id/background"
         app:layout_constraintEnd_toEndOf="@+id/background"
-        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="@+id/background"
-        app:layout_constraintTop_toTopOf="@+id/background"
-        app:layout_constraintVertical_bias="0.818"
         app:srcCompat="@drawable/seed" />
 
     <Button
@@ -120,7 +115,7 @@
         android:id="@+id/plantLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="目前成長：\n3 cm"
+        android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="32dp"
         android:textStyle="bold"
@@ -147,5 +142,17 @@
         app:layout_constraintTop_toTopOf="@+id/background"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/drop" />
+
+    <TextView
+        android:id="@+id/goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="請設定身體體重！"
+        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
