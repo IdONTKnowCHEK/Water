@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                         //        發送通知
                         notificationManager.notify(1, notification);
                     }
-                }, 5000);
+                }, 5000); // 喝水之後通知提醒間隔
 
 
             }
