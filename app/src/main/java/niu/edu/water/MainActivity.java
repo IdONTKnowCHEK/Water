@@ -150,11 +150,17 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 for (Weather.RecordsDTO.LocationDTO locationDTO : response.body().getRecords().getLocation()) {
-                    String msg = "";
-                    for (Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()) {
-                        msg += weatherElementDTO.getElementName() + ":" + weatherElementDTO.getElementValue() + ", ";
+                    if (locationDTO.getLocationName().equals("羅東")) {
+                        for (Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()) {
+                            msg += weatherElementDTO.getElementName() + ":" + weatherElementDTO.getElementValue() + ", ";
+                        }
+                        System.out.println("羅東/" + msg);
                     }
-                    Log.d(locationDTO.getLocationName(), msg);
+//                    String msg = "";
+//                    for (Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()) {
+//                        msg += weatherElementDTO.getElementName() + ":" + weatherElementDTO.getElementValue() + ", ";
+//                    }
+//                    Log.d(locationDTO.getLocationName(), msg);
                 }
             }
 
