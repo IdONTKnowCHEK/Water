@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         final EditText input = new EditText(MainActivity.this);
 
         int environNums = sharedPreferences.getInt("ReasonNums", 0);
-        Log.i("@@@@@@@@@@@@@@@@@@", String.valueOf(environNums));
+//        Log.i("@@@@@@@@@@@@@@@@@@", String.valueOf(environNums));
         for (int i = 0; i < environNums; i++)
         {
             String environItem = sharedPreferences.getString("item_"+i, null);
