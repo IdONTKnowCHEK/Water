@@ -27,12 +27,12 @@ public class drinkLog extends AppCompatActivity {
         List<String> environmentList = new ArrayList<String>();
         SharedPreferences preferDataList = getSharedPreferences("sp", MODE_PRIVATE);
         int environNums = preferDataList.getInt("ReasonNums", 0);
-        Log.i("@@@@@@@@@@@@", String.valueOf(environNums));
-        for (int i = 0; i < environNums; i++)
+//        Log.i("@@@@@@@@@@@@", String.valueOf(environNums));
+        for (int i = environNums-1; i > -1; i--)
         {
             String environItem = preferDataList.getString("item_"+i, null);
             environmentList.add(environItem);
-            Log.i("@@@@@@@@@@@@", String.valueOf(environmentList.get(i)));
+//            Log.i("@@@@@@@@@@@@", String.valueOf(environmentList.get(i)));
 
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

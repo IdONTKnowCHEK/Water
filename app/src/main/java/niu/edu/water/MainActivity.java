@@ -106,8 +106,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         final EditText input = new EditText(MainActivity.this);
 
         int environNums = sharedPreferences.getInt("ReasonNums", 0);
-//        Log.i("@@@@@@@@@@@@@@@@@@", String.valueOf(environNums));
+
         for (int i = 0; i < environNums; i++) {
+            Log.i("@@@@@@@@@@@@@@@@@@", String.valueOf(environNums));
             String environItem = sharedPreferences.getString("item_" + i, null);
             mDataset.add(environItem);
         }
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 editor.putInt("ReasonNums", mDataset.size());
                 for (int i = environNums; i < mDataset.size(); i++) {
                     editor.putString("item_" + i, mDataset.get(i));
-//                    Log.i("@@@@@@@@@@@@", String.valueOf(mDataset.get(i)));
+                    Log.i("@@@@@@@@@@@@", String.valueOf(mDataset.get(i)));
                 }
 
 
@@ -167,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 DatabaseReference myRef = database.getReference("bottle/interval");
 
                 myRef.setValue(60);
+                // 傳值進firebase
 
                 handler.postDelayed(new Runnable() {
                     public void run() {
