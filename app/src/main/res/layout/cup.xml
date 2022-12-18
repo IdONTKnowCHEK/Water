@@ -49,13 +49,13 @@
 
             <TextView
                 android:id="@+id/ml_text"
-                android:text="150ml"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="25dp"
                 android:layout_toEndOf="@+id/image_card"
+                android:text="100ml"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
                 android:textSize="24sp"
@@ -72,8 +72,8 @@
                 android:text="date"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/black"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                />
 
         </RelativeLayout>
 
