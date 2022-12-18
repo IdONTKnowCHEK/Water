@@ -2,7 +2,14 @@ package niu.edu.water;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,10 +26,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import niu.edu.water.weather.Weather;
 import niu.edu.water.weather.WeatherAPIInterface;
@@ -38,13 +50,17 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     TextView textView, growthLength, goal;
     Button buttonDrink;
     ImageView imageDrop, plant;
-    ImageButton log, weather, body;
+    ImageButton log, body;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
     Date curDate = new Date(System.currentTimeMillis());
     String str = formatter.format(curDate);
+    String temp, humd;
     private int length, weight;
     private String growthString, msg;
     private ArrayList<String> mDataset = new ArrayList<>();
+    private long currentSystemTime;
+    private long setTime;
+    private Calendar calendar;
 
     Handler handler = new Handler();
 
@@ -60,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         weatherAPI = WeatherAPIManager.getInstance().getAPI();
         Call<Weather> call = weatherAPI.getData();
         //
-        weather = findViewById(R.id.weatherButton);
         log = findViewById(R.id.drinkButton);
         body = findViewById(R.id.bodyButton);
         goal = findViewById(R.id.goal);
@@ -72,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         ViewGroup.LayoutParams params = plant.getLayoutParams();
         imageDrop.setImageDrawable(null);
         imageDrop.setVisibility(View.GONE);
-        textView.setText(str);
+        textView.setText(str + "  溫度：" + temp + "  濕度：" + humd);
         textView.setSelected(true);
 
         growthString = "目前成長：\n" + length + "cm";
@@ -92,9 +107,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         int environNums = sharedPreferences.getInt("ReasonNums", 0);
 //        Log.i("@@@@@@@@@@@@@@@@@@", String.valueOf(environNums));
-        for (int i = 0; i < environNums; i++)
-        {
-            String environItem = sharedPreferences.getString("item_"+i, null);
+        for (int i = 0; i < environNums; i++) {
+            String environItem = sharedPreferences.getString("item_" + i, null);
             mDataset.add(environItem);
         }
 
@@ -116,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 }
 
 
-                textView.setText(str);
+                textView.setText(str + "  溫度：" + temp + "  濕度：" + humd);
                 textView.setSelected(true);
 
                 length = sharedPreferences.getInt("growth", 0);
@@ -143,6 +157,44 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 imageChange(params, sharedPreferences);
                 imageDrop.startAnimation(translateAnimation);
 
+                currentTime();
+                setTime(calendar);
+                setAlarm();
+//                showtime();
+
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("bottle/interval");
+
+                myRef.setValue(60);
+
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        String id = "123";
+                        int importance = NotificationManager.IMPORTANCE_LOW;
+                        NotificationChannel channel = new NotificationChannel(id, "drink", importance);
+//                channel.enableLights(true);
+//                channel.enableVibration(true);
+                        NotificationManager notificationManager
+                                = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                        notificationManager.createNotificationChannel(channel);
+                        //        建立通知物件內容
+                        Notification notification = new NotificationCompat.Builder(MainActivity.this, "123")
+                                .setCategory(Notification.CATEGORY_MESSAGE)
+                                .setWhen(setTime)
+                                .setSmallIcon(R.drawable.logo)
+                                .setContentTitle("提醒")
+                                .setContentText("該喝水囉!")
+//                        .setAutoCancel(true)
+                                .build();
+
+                        //        發送通知
+                        notificationManager.notify(1, notification);
+                    }
+                }, 5000);
+
+
             }
         });
         //FetchData
@@ -151,10 +203,16 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 for (Weather.RecordsDTO.LocationDTO locationDTO : response.body().getRecords().getLocation()) {
                     if (locationDTO.getLocationName().equals("羅東")) {
+                        temp = locationDTO.getWeatherElement().get(3).getElementValue();
+                        humd = locationDTO.getWeatherElement().get(4).getElementValue();
+                        textView.setText(str + "  溫度：" + temp + "  濕度：" + humd);
+
                         for (Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()) {
                             msg += weatherElementDTO.getElementName() + ":" + weatherElementDTO.getElementValue() + ", ";
+
                         }
-                        System.out.println("羅東/" + msg);
+//                        System.out.println("羅東/" + msg);
+
                     }
 //                    String msg = "";
 //                    for (Weather.RecordsDTO.LocationDTO.WeatherElementDTO weatherElementDTO : locationDTO.getWeatherElement()) {
@@ -227,6 +285,47 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         }
     }
 
+    private void currentTime() {
+        calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        currentSystemTime = System.currentTimeMillis();
+        Log.i("現在時間", String.valueOf(currentSystemTime));
+    }
+
+    private void setTime(Calendar calendar) {
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        setTime = calendar.getTimeInMillis();
+        Log.i("發送時間", String.valueOf(setTime));
+
+//        if (currentSystemTime > setTime) {
+//            calendar.add(Calendar.MONTH, 1);
+//            setTime = calendar.getTimeInMillis();
+//        }
+    }
+
+
+    private void setAlarm() {
+        Intent intent = new Intent(this, alarmReceiver.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(this, 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, setTime, pendingIntent);
+    }
+
+    private void showtime() {
+
+        String text = (calendar.get(Calendar.MONTH) + 1) + "月"
+                + calendar.get(Calendar.DAY_OF_MONTH) + "日\n"
+                + calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                + calendar.get(Calendar.MINUTE);
+
+        Toast.makeText(this, "下次喝水提醒半小時後", Toast.LENGTH_LONG)
+                .show();
+    }
+
     private void imageChange(ViewGroup.LayoutParams params, SharedPreferences sharedPreferences) {
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -245,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                     params.height = 300;
                     plant.setLayoutParams(params);
                     plant.setImageResource(R.drawable.plant);
-                } else if (length > 15 && length < 20) {
+                } else if (length > 15) {
                     params.height = 500;
                     plant.setLayoutParams(params);
                     plant.setImageResource(R.drawable.growth);
