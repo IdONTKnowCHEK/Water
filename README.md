@@ -11,10 +11,14 @@
 - 水壺提醒：結合D1mini Wifi模組，水壺會在設定的時間點發出提醒
 - 喝水紀錄：會記錄每次喝水時間，提供統計數據
 - 植物養成：勤奮喝水養育自己的盆景植物
+
+
 ![功能](https://user-images.githubusercontent.com/86880683/226267812-a81b9467-9a5a-4690-9ad0-f690498e041f.jpg)
 
 
 - 燈泡閃爍代表該喝水了
+
+
 ![image](https://user-images.githubusercontent.com/86880683/226261466-f0a66dd4-5d26-45ba-b602-c157ea901391.png)
 - 除了APP通知外，Line notify 也會接收來自D1Mini的訊號發送通知
 <img src="https://user-images.githubusercontent.com/86880683/226262587-00f1fe50-0525-4d00-aa23-94a90d53fdf1.jpg" width="200" >
