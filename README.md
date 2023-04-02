@@ -56,4 +56,4 @@
 ## 安裝
 > Android Versioin: > 4.0
 - 使用 Android Studio 開啟專案，等待 Gradle 同步完成後即可建置和執行 APP。
-- 下載 APK 安裝執行
+- 或是下載 [APK](https://github.com/IdONTKnowCHEK/Water/releases/tag/APK) 安裝執行
